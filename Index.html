@@ -5,77 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FeulOps - Fuel Management System</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f5f5;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #333;
-      text-align: center;
-    }
-    .pdf-container {
-      margin: 20px 0;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .fallback-message {
-      background-color: #f8f9fa;
-      padding: 20px;
-      text-align: center;
-      border-radius: 4px;
-      margin: 20px 0;
-    }
-    .instructions {
-      background-color: #e7f3ff;
-      padding: 15px;
-      border-radius: 4px;
-      margin: 20px 0;
-    }
+
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>FeulOps - Fuel Management System</h1>
-    
-    <div class="instructions">
-      <p>This application displays fuel management reports and analytics. If the embedded PDF viewer doesn't load, please check the following:</p>
-      <ul>
-        <li>Ensure you have a stable internet connection</li>
-        <li>Check if the Google Apps Script service is accessible</li>
-        <li>Try refreshing the page</li>
-      </ul>
-    </div>
-    
     <div class="pdf-container">
       <embed 
         src="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec" 
         type="application/pdf" 
-        width="100%" 
-        height="600px"
         title="Fuel Management Report"
+        width="100%" 
+        height="700px"
       />
     </div>
-    
-    <div class="fallback-message">
-      <p>If the PDF doesn't load above, you can <a href="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec" target="_blank">access the report directly</a>.</p>
-    </div>
-    
-    <footer>
-      <p style="text-align: center; color: #666; margin-top: 30px;">
-        &copy; 2024 FeulOps. All rights reserved.
-      </p>
-    </footer>
+ 
   </div>
 </body>
 </html>

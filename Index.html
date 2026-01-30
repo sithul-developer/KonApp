@@ -4,98 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FeulOps - Fuel Management System</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-    }
-    
-    .container {
-      max-width: 100%;
-    }
-    
-    .iframe-wrapper {
-      width: 100%;
-      height: 80vh;
-      border: none;
-      overflow: hidden;
-    }
-    
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    
-    .mobile-notice {
-      display: none;
-      background: #f8f9fa;
-      border: 1px solid #dee2e6;
-      padding: 15px;
-      margin-top: 20px;
-      border-radius: 5px;
-      text-align: center;
-    }
-    
-    .mobile-notice a {
-      display: inline-block;
-      background: #007bff;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-    
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
-      
-      .iframe-wrapper {
-        height: 70vh;
-      }
-      
-      .mobile-notice {
-        display: block;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .iframe-wrapper {
-        height: 60vh;
-      }
-    }
-  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>FeulOps Dashboard</h1>
-    <p>Fuel Management System</p>
-    
-    <div class="iframe-wrapper">
-      <iframe 
-        src="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec"
-        title="Fuel Management Report"
-        allow="autoplay; encrypted-media; fullscreen"
-        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-      ></iframe>
-    </div>
-    
-    <div class="mobile-notice">
-      <p><strong>Mobile Tip:</strong> For best experience, rotate to landscape or open in new tab.</p>
-      <a href="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec" 
-         target="_blank">
-        Open in New Tab
-      </a>
-    </div>
+  <h1>FeulOps Dashboard</h1>
+  <p>Fuel Management System</p>
+  
+  <iframe 
+    src="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec"
+    title="Fuel Management Report"
+    width="100%"
+    height="500"
+    style="border:none;"
+    allow="autoplay; encrypted-media; fullscreen"
+    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+  ></iframe>
+  
+  <div id="mobileNotice" style="display:none; margin-top:20px;">
+    <p><strong>Mobile Tip:</strong> For best experience, rotate to landscape or open in new tab.</p>
+    <a href="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec" 
+       target="_blank">
+      Open in New Tab
+    </a>
   </div>
   
   <script>
     // Simple mobile detection
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      document.querySelector('.mobile-notice').style.display = 'block';
+      document.getElementById('mobileNotice').style.display = 'block';
+      document.querySelector('iframe').style.height = '400px';
     }
   </script>
 </body>

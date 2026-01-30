@@ -6,9 +6,6 @@
   <title>FeulOps - Fuel Management System</title>
 </head>
 <body>
-  <h1>FeulOps Dashboard</h1>
-  <p>Fuel Management System</p>
-  
   <iframe 
     src="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec"
     title="Fuel Management Report"
@@ -18,19 +15,9 @@
     allow="autoplay; encrypted-media; fullscreen"
     sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
   ></iframe>
-  
-  <div id="mobileNotice" style="display:none; margin-top:20px;">
-    <p><strong>Mobile Tip:</strong> For best experience, rotate to landscape or open in new tab.</p>
-    <a href="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec" 
-       target="_blank">
-      Open in New Tab
-    </a>
-  </div>
-  
   <script>
-    // Simple mobile detection
+    // Simple mobile detection and adjustment
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      document.getElementById('mobileNotice').style.display = 'block';
       document.querySelector('iframe').style.height = '400px';
     }
   </script>

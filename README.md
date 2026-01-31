@@ -57,11 +57,22 @@ If you encounter a "404: NOT_FOUND" error when deploying to Vercel:
 
 Simply open `Index.html` in any modern web browser. No build process or server is required.
 
+## Google Apps Script Integration
+
+The dashboard embeds a Google Apps Script web application that provides:
+- Real-time data processing from Google Sheets
+- Interactive reports and analytics
+- Dynamic chart generation
+
+### Updating the Google Apps Script
+For detailed instructions on how to update your Google Apps Script project, see:
+[GOOGLE_APPS_SCRIPT_GUIDE.md](GOOGLE_APPS_SCRIPT_GUIDE.md)
+
 ## Notes
 
-- The application embeds a PDF from Google Apps Script
-- If the PDF doesn't load, check the Google Apps Script service accessibility
-- The application includes fallback instructions and direct link to the PDF
+- The application embeds a Google Apps Script web app as an iframe
+- If the dashboard doesn't load, check the Google Apps Script service accessibility
+- The application includes fallback instructions and direct link to the dashboard
 
 ## License
 

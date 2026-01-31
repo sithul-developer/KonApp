@@ -2,20 +2,131 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>FeulOps - Fuel Management System</title>
   <style>
-    /* Remove default margins and prevent body scrolling */
-    body, html {
+    /* Reset and base styles */
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body, html {
       height: 100%;
       width: 100%;
-      overflow: hidden; 
-      background-color: #f4f4f9; /* Matches typical Google Sheets/Apps Script backgrounds */
+      overflow: hidden;
+      background-color: #f4f4f9;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     }
-
-    /* Make the iframe fill the entire viewport */
+    
+    /* Main container with safe area support for mobile */
+    .container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    
+    /* Loading overlay */
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f4f4f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: opacity 0.3s ease;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e0e0e0;
+      border-top: 3px solid #4285f4;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      color: #5f6368;
+      font-size: 16px;
+    }
+    
+    /* Error message */
+    .error-message {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f4f4f9;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      z-index: 20;
+    }
+    
+    .error-icon {
+      font-size: 48px;
+      color: #ea4335;
+      margin-bottom: 20px;
+    }
+    
+    .error-title {
+      font-size: 20px;
+      color: #202124;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    
+    .error-details {
+      color: #5f6368;
+      font-size: 14px;
+      margin-bottom: 20px;
+      max-width: 300px;
+      line-height: 1.4;
+    }
+    
+    .retry-button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .retry-button:hover {
+      background-color: #3367d6;
+    }
+    
+    .retry-button:active {
+      background-color: #2a56c6;
+    }
+    
+    /* Responsive iframe */
     .fullscreen-iframe {
       position: absolute;
       top: 0;
@@ -23,18 +134,198 @@
       width: 100%;
       height: 100%;
       border: none;
+      background-color: white;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    /* Landscape mode optimization */
+    @media (orientation: landscape) {
+      .loading-overlay {
+        flex-direction: row;
+      }
+      
+      .spinner {
+        margin-right: 20px;
+        margin-bottom: 0;
+      }
+    }
+    
+    /* Small mobile devices */
+    @media (max-width: 360px) {
+      .spinner {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .loading-text {
+        font-size: 14px;
+      }
+      
+      .error-title {
+        font-size: 18px;
+      }
+    }
+    
+    /* Hide iOS Safari address bar */
+    @supports (-webkit-touch-callout: none) {
+      body, html {
+        height: -webkit-fill-available;
+      }
+      
+      .container {
+        height: -webkit-fill-available;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <!-- Loading state -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="spinner"></div>
+      <div class="loading-text">System Loading...</div>
+    </div>
+    
+    <!-- Error state -->
+    <div class="error-message" id="errorMessage">
+      <div class="error-icon">⚠️</div>
+      <div class="error-title">Failed to Load Application</div>
+      <div class="error-details" id="errorDetails">
+        Unable to connect to the Fuel Management System. Please check your internet connection.
+      </div>
+      <button class="retry-button" id="retryButton">Retry</button>
+    </div>
+    
+    <!-- Main iframe -->
+    <iframe 
+      id="mainFrame"
+      src="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec"
+      title="Fuel Management System"
+      class="fullscreen-iframe"
+      allow="autoplay; encrypted-media; fullscreen"
+      sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-top-navigation"
+      loading="eager"
+    ></iframe>
+  </div>
 
-  <iframe 
-    src="https://script.google.com/macros/s/AKfycbyApOlY-o8qfL7P2cdOrzAKoLKBbtEhyJh3q6ovBft4ozf2iGmkYhm6-2OgcMPwKkTlAQ/exec"
-    title="Fuel Management Report"
-    class="fullscreen-iframe"
-    allow="autoplay; encrypted-media; fullscreen"
-    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-  ></iframe>
-
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const iframe = document.getElementById('mainFrame');
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      const errorMessage = document.getElementById('errorMessage');
+      const errorDetails = document.getElementById('errorDetails');
+      const retryButton = document.getElementById('retryButton');
+      let loadTimer;
+      
+      // Set timeout for loading
+      loadTimer = setTimeout(() => {
+        showError('Loading is taking longer than expected. Please check your connection.');
+      }, 10000); // 10 seconds timeout
+      
+      // Iframe load success handler
+      iframe.addEventListener('load', function() {
+        clearTimeout(loadTimer);
+        hideLoading();
+        hideError();
+        iframe.style.opacity = '1';
+        
+        // Additional optimization: notify iframe that it's loaded in mobile
+        try {
+          iframe.contentWindow.postMessage({
+            type: 'environment',
+            isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
+            isPortrait: window.innerHeight > window.innerWidth
+          }, '*');
+        } catch (e) {
+          console.log('Could not send environment info to iframe');
+        }
+      });
+      
+      // Iframe error handler
+      iframe.addEventListener('error', function() {
+        clearTimeout(loadTimer);
+        hideLoading();
+        showError('Failed to load the application. The server might be unavailable.');
+      });
+      
+      // Retry button handler
+      retryButton.addEventListener('click', function() {
+        showLoading();
+        hideError();
+        iframe.style.opacity = '0';
+        
+        // Force reload with cache bypass
+        loadTimer = setTimeout(() => {
+          showError('Loading is taking longer than expected. Please check your connection.');
+        }, 10000);
+        
+        iframe.src = iframe.src.split('?')[0] + '?t=' + new Date().getTime();
+      });
+      
+      // Handle orientation changes
+      let orientationTimeout;
+      window.addEventListener('orientationchange', function() {
+        clearTimeout(orientationTimeout);
+        
+        // Delay to allow orientation to settle
+        orientationTimeout = setTimeout(() => {
+          // Notify iframe of orientation change
+          try {
+            iframe.contentWindow.postMessage({
+              type: 'orientation',
+              isPortrait: window.innerHeight > window.innerWidth
+            }, '*');
+          } catch (e) {
+            // Silently fail
+          }
+        }, 300);
+      });
+      
+      // Handle network status
+      window.addEventListener('online', function() {
+        if (errorMessage.style.display === 'flex') {
+          retryButton.click();
+        }
+      });
+      
+      window.addEventListener('offline', function() {
+        if (loadingOverlay.style.display === 'flex') {
+          clearTimeout(loadTimer);
+          showError('You are offline. Please check your internet connection.');
+        }
+      });
+      
+      // Show loading state
+      function showLoading() {
+        loadingOverlay.style.display = 'flex';
+        iframe.style.opacity = '0';
+      }
+      
+      // Hide loading state
+      function hideLoading() {
+        loadingOverlay.style.opacity = '0';
+        setTimeout(() => {
+          loadingOverlay.style.display = 'none';
+          loadingOverlay.style.opacity = '1';
+        }, 300);
+      }
+      
+      // Show error state
+      function showError(message) {
+        errorDetails.textContent = message;
+        errorMessage.style.display = 'flex';
+        iframe.style.opacity = '0';
+      }
+      
+      // Hide error state
+      function hideError() {
+        errorMessage.style.display = 'none';
+      }
+      
+      // Initial state
+      showLoading();
+    });
+  </script>
 </body>
 </html>
